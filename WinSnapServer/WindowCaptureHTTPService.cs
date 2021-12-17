@@ -63,12 +63,15 @@ namespace WinSnapServer
                 HttpListenerRequest req = ctx.Request;
                 HttpListenerResponse resp = ctx.Response;
 
+                gui.ClientIP = req.RemoteEndPoint.Address.ToString();
+
                 // Print out some info about the request
                 Console.WriteLine("Request #: {0}", ++requestCount);
                 Console.WriteLine(req.Url.ToString());
                 Console.WriteLine(req.HttpMethod);
                 Console.WriteLine(req.UserHostName);
                 Console.WriteLine(req.UserAgent);
+                Console.WriteLine(req.RemoteEndPoint.Address.ToString());
                 Console.WriteLine();
 
                 gui.RequestCount = requestCount.ToString();

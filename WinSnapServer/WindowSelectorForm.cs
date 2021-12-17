@@ -10,6 +10,7 @@ namespace WinSnapServer
 {
     public partial class WindowSelectorForm : Form
     {
+        private String clientIPAddress;
         public WindowSelectorForm()
         {
             InitializeComponent();
@@ -66,6 +67,12 @@ namespace WinSnapServer
         {
             get { return urlStatusLabel.Text; }
             set { urlStatusLabel.Text = value; }
+        }
+
+        public String ClientIP
+        {
+            get { return clientIPAddress; }
+            set { clientIPAddress = value; }
         }
 
         public int WakeupReqCount

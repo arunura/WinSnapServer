@@ -11,7 +11,7 @@ namespace WinSnapServer
     {
 
         private static Timer wakeUpTimer;
-        private static int seqConfirmed;
+        private static int seqConfirmed = 1;
         private static WindowSelectorForm windowSelectorForm;
 
         /// <summary>
@@ -28,25 +28,30 @@ namespace WinSnapServer
             Application.Run(windowSelectorForm);
         }
 
-        static void WakeUpTablet(object sender, EventArgs e)
+        static void WakeUpClient(object sender, EventArgs e)
         {
-            Console.WriteLine("Executing timed tablet wake up call.");
-            try
+            if (windowSelectorForm.ClientIP != null)
             {
-                SendCharToTablet("C65");
-                SendCharToTablet("D8");
-                SendCharToTablet("U8");
-                SendCharToTablet("D8");
-                SendCharToTablet("U8");
-            } catch(Exception ex)
-            {
-                //Do nothing
+                Console.WriteLine("Executing timed tablet wake up call.");
+                try
+                {
+                    SendCharToClient("C65");
+                    System.Threading.Thread.Sleep(500);
+                    SendCharToClient("D8");
+                    SendCharToClient("U8");
+                    SendCharToClient("D8");
+                    SendCharToClient("U8");
+                }
+                catch (Exception ex)
+                {
+                    //Do nothing
+                }
             }
         }
 
-        static void SendCharToTablet(string character)
+        static void SendCharToClient(string character)
         {
-            string url = "http://192.168.1.178:7777/key?" + seqConfirmed + "," + character + ",";
+            string url = "http://" + windowSelectorForm.ClientIP + ":7777/key?" + seqConfirmed + "," + character + ",";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
 
@@ -66,7 +71,7 @@ namespace WinSnapServer
 
         static void ResetSeqConfirmed()
         {
-            const string url = "http://192.168.1.178:7777/";
+            string url = "http://"+ windowSelectorForm.ClientIP + ":7777/";
             HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "GET";
             var webResponse = request.GetResponse();
@@ -89,10 +94,10 @@ namespace WinSnapServer
             SetAllowUnsafeHeaderParsing();
             try
             {
-                ResetSeqConfirmed();
+                //ResetSeqConfirmed();
 
                 wakeUpTimer = new Timer();
-                wakeUpTimer.Tick += new EventHandler(WakeUpTablet);
+                wakeUpTimer.Tick += new EventHandler(WakeUpClient);
                 wakeUpTimer.Interval = 1000 * 60; // 1 min
                 wakeUpTimer.Start();
 
