@@ -1,8 +1,8 @@
 # Window Snapshot Server
 
-The WSS app can publish one of the windows on your Windows desktop to a remote host over HTTP by taking periodic scheenshots of the window. 
-
 [![.NET Core Desktop](https://github.com/arunura/WinSnapServer/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/arunura/WinSnapServer/actions/workflows/dotnet-desktop.yml)
+
+The WSS app can publish one of the windows on your Windows desktop to a remote host over HTTP by taking periodic scheenshots of the window. 
 
 ## Features
 1. Capture window screens from all virtual desktops
